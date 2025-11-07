@@ -1,72 +1,19 @@
 {
   "version": 2,
+  "public": true,
   "builds": [
     {
-      "src": "*.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.js",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.css",
+      "src": "index.html",
       "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/$1"
+      "dest": "/index.html"
     }
   ]
 }
-```
-
-**Commit this file**
-
----
-
-#### **FILE 2: Check for `index.html`**
-
-**Do you have a file called `index.html` in your repo?**
-
-- If **YES** → Skip to Step 3
-- If **NO** → We need to rename your main HTML file to `index.html`
-
-**To rename:**
-1. Click on your main HTML file (the homepage one)
-2. Click the pencil icon (edit)
-3. Change filename to `index.html`
-4. Commit changes
-
----
-
-### **STEP 3: Deploy on Vercel**
-
-Now let's connect Vercel to this GitHub repo:
-
-1. **Go to:** https://vercel.com/new
-
-2. **Import your repository:**
-   - You should see "Carxxx" in the list
-   - Click **"Import"**
-
-3. **Configure Project:**
-   - **Project Name:** `ucarx-landing` (or keep as is)
-   - **Framework Preset:** Select **"Other"** or **"Static Site"**
-   - **Root Directory:** Leave as `./` (root)
-   - **Build Command:** Leave empty
-   - **Output Directory:** Leave empty or `.`
-
-4. **Environment Variables:**
-   - Skip this (not needed for static HTML)
-
-5. **Click "Deploy"**
-
-6. **Wait 1-2 minutes** ⏳
-
----
 
 ### **STEP 4: Your Site is LIVE! 🎉**
 
