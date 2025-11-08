@@ -33,57 +33,84 @@
         .float-animation { animation: float 3s ease-in-out infinite; }
     </style>
 </head>
-<body class="font-sans">
+<body class="font-sans bg-white">
     <main>
         <!-- Navigation -->
-        <nav class="fixed top-0 w-full bg-white shadow-md z-50 fade-in">
+        <nav class="fixed top-0 w-full bg-white shadow-sm z-50 fade-in">
             <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
                 <div class="flex items-center gap-3">
-                    <div class="text-4xl">🚗</div>
+                    <div class="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M8 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM15 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z"/>
+                            <path d="M3 4a1 1 0 00-1 1v10a1 1 0 001 1h1.05a2.5 2.5 0 014.9 0H10a1 1 0 001-1V5a1 1 0 00-1-1H3zM14 7a1 1 0 00-1 1v6.05A2.5 2.5 0 0115.95 16H17a1 1 0 001-1v-5a1 1 0 00-.293-.707l-2-2A1 1 0 0015 7h-1z"/>
+                        </svg>
+                    </div>
                     <span class="text-2xl font-bold text-gray-900">UCarX</span>
                 </div>
                 <div class="hidden md:flex gap-8 items-center">
-                    <a href="#features" class="text-gray-600 hover:text-red-600 transition">Features</a>
-                    <a href="#how-it-works" class="text-gray-600 hover:text-red-600 transition">How It Works</a>
-                    <a href="#contact" class="text-gray-600 hover:text-red-600 transition">Contact</a>
-                    <button class="px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                    <a href="#features" class="text-gray-600 hover:text-red-600 transition font-medium">Features</a>
+                    <a href="#how-it-works" class="text-gray-600 hover:text-red-600 transition font-medium">How It Works</a>
+                    <a href="#contact" class="text-gray-600 hover:text-red-600 transition font-medium">Contact</a>
+                    <button class="px-6 py-2.5 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-all shadow-md hover:shadow-lg">
                         Get Started
                     </button>
                 </div>
             </div>
         </nav>
 
-        <!-- Hero Section -->
-        <section class="pt-32 pb-20 bg-gradient-to-br from-gray-900 to-gray-800 text-white">
-            <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-                <div class="slide-up">
-                    <div class="inline-block px-4 py-2 bg-white/10 rounded-full text-sm mb-6">
-                        🎉 All done! Your car management solution is here
+        <!-- Hero Section - WHITE BACKGROUND WITH CAR IMAGE -->
+        <section class="pt-24 pb-16 bg-white">
+            <div class="max-w-7xl mx-auto px-6 py-12">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <!-- Left Column - Text Content -->
+                    <div class="slide-up">
+                        <h1 class="text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+                            Your Complete <span class="text-red-600">Car Management</span> Solution
+                        </h1>
+                        <p class="text-xl text-gray-600 mb-8 leading-relaxed">
+                            Track maintenance, find trusted service centers, and manage your vehicle's entire lifecycle in one place. Never miss a service date again.
+                        </p>
+                        
+                        <!-- CTA Buttons -->
+                        <div class="flex flex-wrap gap-4 mb-8">
+                            <button class="px-8 py-4 bg-red-600 text-white rounded-lg font-semibold text-lg hover:bg-red-700 transform hover:scale-105 transition-all shadow-lg hover:shadow-xl">
+                                Start Managing Your Car
+                            </button>
+                            <button class="px-8 py-4 bg-white text-gray-900 border-2 border-gray-900 rounded-lg font-semibold text-lg hover:bg-gray-900 hover:text-white transition-all">
+                                Learn More
+                            </button>
+                        </div>
+
+                        <!-- Feature Pills -->
+                        <div class="flex flex-wrap gap-3">
+                            <span class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">Free to Start</span>
+                            <span class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">WhatsApp Reminders</span>
+                            <span class="px-4 py-2 bg-gray-100 text-gray-700 rounded-full text-sm font-medium">Trusted Service Centers</span>
+                        </div>
                     </div>
-                    <h1 class="text-5xl md:text-6xl font-bold mb-6 leading-tight">
-                        Your Complete <span class="text-red-500">Car Management</span> Solution
-                    </h1>
-                    <p class="text-xl text-gray-300 mb-8">
-                        Track maintenance, find trusted service centers, and manage your vehicle's entire lifecycle in one place. Never miss a service date again.
-                    </p>
-                    <div class="flex flex-wrap gap-4 mb-8">
-                        <span class="px-4 py-2 bg-white/10 rounded-full text-sm">Free to Start</span>
-                        <span class="px-4 py-2 bg-white/10 rounded-full text-sm">WhatsApp Reminders</span>
-                        <span class="px-4 py-2 bg-white/10 rounded-full text-sm">Trusted Service Centers</span>
-                    </div>
-                    <div class="flex flex-wrap gap-4">
-                        <button class="px-8 py-4 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transform hover:scale-105 transition">
-                            Start Managing Your Car
-                        </button>
-                        <button class="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition">
-                            Learn More
-                        </button>
-                    </div>
-                </div>
-                <div class="slide-up float-animation">
-                    <div class="bg-gradient-to-br from-red-500/20 to-purple-500/20 rounded-3xl p-8 backdrop-blur">
-                        <div class="text-9xl text-center">🚗</div>
-                        <div class="mt-6 text-center text-xl font-semibold">Your Vehicle Dashboard</div>
+
+                    <!-- Right Column - Car Image -->
+                    <div class="slide-up relative">
+                        <div class="relative rounded-2xl overflow-hidden shadow-2xl float-animation">
+                            <!-- Using a placeholder car image - replace with your actual image URL -->
+                            <img src="https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?w=800&h=600&fit=crop" 
+                                 alt="White Sports Car" 
+                                 class="w-full h-auto object-cover"
+                                 onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22600%22%3E%3Crect fill=%22%23f3f4f6%22 width=%22800%22 height=%22600%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-family=%22sans-serif%22 font-size=%2248%22 fill=%22%239ca3af%22%3E🚗 Car Image%3C/text%3E%3C/svg%3E';">
+                            
+                            <!-- Next Service Badge -->
+                            <div class="absolute bottom-6 left-6 bg-white rounded-xl shadow-lg p-4 flex items-center gap-3">
+                                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <div class="text-sm text-gray-500 font-medium">Next Service</div>
+                                    <div class="text-sm font-semibold text-gray-900">Oil Change in 5 days</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -101,115 +128,92 @@
                 </div>
 
                 <div class="grid md:grid-cols-3 gap-8">
-                    <!-- Feature 1 -->
-                    <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all slide-up">
-                        <div class="w-16 h-16 bg-red-100 rounded-xl flex items-center justify-center text-3xl mb-6">🔧</div>
-                        <h3 class="text-2xl font-bold mb-4">Track Maintenance</h3>
-                        <p class="text-gray-600 mb-4">Keep detailed records of all services, repairs, and inspections with photo receipts.</p>
-                        <a href="#" class="text-red-600 font-semibold hover:underline">Learn more →</a>
+                    <!-- Feature Cards -->
+                    <div class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all slide-up border border-gray-100">
+                        <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center text-2xl mb-6">🔧</div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-900">Track Maintenance</h3>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Keep detailed records of all services, repairs, and inspections with photo receipts.</p>
+                        <a href="#" class="text-red-600 font-semibold hover:underline inline-flex items-center">
+                            Learn more 
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
                     </div>
 
-                    <!-- Feature 2 -->
-                    <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all slide-up" style="animation-delay: 0.1s">
-                        <div class="w-16 h-16 bg-red-100 rounded-xl flex items-center justify-center text-3xl mb-6">🔔</div>
-                        <h3 class="text-2xl font-bold mb-4">Smart Reminders</h3>
-                        <p class="text-gray-600 mb-4">Get WhatsApp notifications before your next service, insurance renewal, or inspection.</p>
-                        <a href="#" class="text-red-600 font-semibold hover:underline">Learn more →</a>
+                    <div class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all slide-up border border-gray-100" style="animation-delay: 0.1s">
+                        <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center text-2xl mb-6">🔔</div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-900">Smart Reminders</h3>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Get WhatsApp notifications before your next service, insurance renewal, or inspection.</p>
+                        <a href="#" class="text-red-600 font-semibold hover:underline inline-flex items-center">
+                            Learn more 
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
                     </div>
 
-                    <!-- Feature 3 -->
-                    <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all slide-up" style="animation-delay: 0.2s">
-                        <div class="w-16 h-16 bg-red-100 rounded-xl flex items-center justify-center text-3xl mb-6">⭐</div>
-                        <h3 class="text-2xl font-bold mb-4">Trusted Service Centers</h3>
-                        <p class="text-gray-600 mb-4">Find rated mechanics near you with verified reviews from other users.</p>
-                        <a href="#" class="text-red-600 font-semibold hover:underline">Learn more →</a>
+                    <div class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all slide-up border border-gray-100" style="animation-delay: 0.2s">
+                        <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center text-2xl mb-6">⭐</div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-900">Trusted Service Centers</h3>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Find rated mechanics near you with verified reviews from other users.</p>
+                        <a href="#" class="text-red-600 font-semibold hover:underline inline-flex items-center">
+                            Learn more 
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
                     </div>
 
-                    <!-- Feature 4 -->
-                    <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all slide-up" style="animation-delay: 0.3s">
-                        <div class="w-16 h-16 bg-red-100 rounded-xl flex items-center justify-center text-3xl mb-6">🛒</div>
-                        <h3 class="text-2xl font-bold mb-4">Buy & Sell</h3>
-                        <p class="text-gray-600 mb-4">Verified vehicle listings with complete maintenance history and fair pricing.</p>
-                        <a href="#" class="text-red-600 font-semibold hover:underline">Learn more →</a>
+                    <div class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all slide-up border border-gray-100" style="animation-delay: 0.3s">
+                        <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center text-2xl mb-6">🛒</div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-900">Buy & Sell</h3>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Verified vehicle listings with complete maintenance history and fair pricing.</p>
+                        <a href="#" class="text-red-600 font-semibold hover:underline inline-flex items-center">
+                            Learn more 
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
                     </div>
 
-                    <!-- Feature 5 -->
-                    <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all slide-up" style="animation-delay: 0.4s">
-                        <div class="w-16 h-16 bg-red-100 rounded-xl flex items-center justify-center text-3xl mb-6">📄</div>
-                        <h3 class="text-2xl font-bold mb-4">Digital Documents</h3>
-                        <p class="text-gray-600 mb-4">Store all car papers, insurance, and licenses securely in the cloud.</p>
-                        <a href="#" class="text-red-600 font-semibold hover:underline">Learn more →</a>
+                    <div class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all slide-up border border-gray-100" style="animation-delay: 0.4s">
+                        <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center text-2xl mb-6">📄</div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-900">Digital Documents</h3>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Store all car papers, insurance, and licenses securely in the cloud.</p>
+                        <a href="#" class="text-red-600 font-semibold hover:underline inline-flex items-center">
+                            Learn more 
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
                     </div>
 
-                    <!-- Feature 6 -->
-                    <div class="bg-white p-8 rounded-2xl shadow-lg hover:shadow-xl hover:-translate-y-2 transition-all slide-up" style="animation-delay: 0.5s">
-                        <div class="w-16 h-16 bg-red-100 rounded-xl flex items-center justify-center text-3xl mb-6">📊</div>
-                        <h3 class="text-2xl font-bold mb-4">Cost Analytics</h3>
-                        <p class="text-gray-600 mb-4">Track spending, predict future costs, and optimize your maintenance budget.</p>
-                        <a href="#" class="text-red-600 font-semibold hover:underline">Learn more →</a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- How It Works -->
-        <section id="how-it-works" class="py-20 bg-white">
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="text-center mb-16">
-                    <h2 class="text-4xl md:text-5xl font-bold mb-4">How It Works</h2>
-                    <p class="text-xl text-gray-600">Get started in 3 simple steps</p>
-                </div>
-
-                <div class="space-y-16">
-                    <!-- Step 1 -->
-                    <div class="grid md:grid-cols-2 gap-12 items-center">
-                        <div>
-                            <div class="inline-block w-16 h-16 bg-red-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mb-6">1</div>
-                            <h3 class="text-3xl font-bold mb-4">Add Your Vehicle</h3>
-                            <p class="text-xl text-gray-600">Enter your car details, upload photos, and digitize all your documents in minutes.</p>
-                        </div>
-                        <div class="bg-gradient-to-br from-red-100 to-purple-100 rounded-2xl p-12 text-center">
-                            <div class="text-8xl">📝</div>
-                        </div>
-                    </div>
-
-                    <!-- Step 2 -->
-                    <div class="grid md:grid-cols-2 gap-12 items-center">
-                        <div class="order-2 md:order-1 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-2xl p-12 text-center">
-                            <div class="text-8xl">🔧</div>
-                        </div>
-                        <div class="order-1 md:order-2">
-                            <div class="inline-block w-16 h-16 bg-red-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mb-6">2</div>
-                            <h3 class="text-3xl font-bold mb-4">Track Services</h3>
-                            <p class="text-xl text-gray-600">Log every maintenance visit with photos, receipts, and notes for complete history.</p>
-                        </div>
-                    </div>
-
-                    <!-- Step 3 -->
-                    <div class="grid md:grid-cols-2 gap-12 items-center">
-                        <div>
-                            <div class="inline-block w-16 h-16 bg-red-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mb-6">3</div>
-                            <h3 class="text-3xl font-bold mb-4">Get Reminders</h3>
-                            <p class="text-xl text-gray-600">Receive WhatsApp notifications so you never miss important service dates.</p>
-                        </div>
-                        <div class="bg-gradient-to-br from-green-100 to-teal-100 rounded-2xl p-12 text-center">
-                            <div class="text-8xl">📱</div>
-                        </div>
+                    <div class="bg-white p-8 rounded-2xl shadow-md hover:shadow-xl hover:-translate-y-2 transition-all slide-up border border-gray-100" style="animation-delay: 0.5s">
+                        <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center text-2xl mb-6">📊</div>
+                        <h3 class="text-xl font-bold mb-3 text-gray-900">Cost Analytics</h3>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Track spending, predict future costs, and optimize your maintenance budget.</p>
+                        <a href="#" class="text-red-600 font-semibold hover:underline inline-flex items-center">
+                            Learn more 
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                            </svg>
+                        </a>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- CTA Section -->
-        <section class="py-20 bg-gradient-to-r from-red-600 to-purple-600 text-white">
-            <div class="max-w-4xl mx-auto px-6 text-center">
+        <section class="py-20 bg-gradient-to-r from-red-600 to-red-700">
+            <div class="max-w-4xl mx-auto px-6 text-center text-white">
                 <h2 class="text-4xl md:text-5xl font-bold mb-6">Ready to Start?</h2>
                 <p class="text-xl mb-8 opacity-90">Join thousands of Egyptian car owners managing their vehicles smarter</p>
                 <div class="flex flex-wrap gap-4 justify-center">
-                    <button class="px-8 py-4 bg-white text-red-600 rounded-lg font-semibold text-lg hover:bg-gray-100 transform hover:scale-105 transition">
+                    <button class="px-8 py-4 bg-white text-red-600 rounded-lg font-semibold text-lg hover:bg-gray-100 transform hover:scale-105 transition shadow-lg">
                         Get Started Free
                     </button>
-                    <button class="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-semibold text-lg hover:bg-white/20 transition">
+                    <button class="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-semibold text-lg hover:bg-white/10 transition">
                         View Demo
                     </button>
                 </div>
@@ -217,44 +221,13 @@
         </section>
 
         <!-- Footer -->
-        <footer id="contact" class="bg-gray-900 text-white py-16">
-            <div class="max-w-7xl mx-auto px-6">
-                <div class="grid md:grid-cols-4 gap-8 mb-8">
-                    <div>
-                        <div class="flex items-center gap-2 mb-4">
-                            <span class="text-3xl">🚗</span>
-                            <span class="text-2xl font-bold">UCarX</span>
-                        </div>
-                        <p class="text-gray-400">Your complete car management solution for Egypt</p>
-                    </div>
-                    <div>
-                        <h4 class="font-bold mb-4">Product</h4>
-                        <ul class="space-y-2 text-gray-400">
-                            <li><a href="#" class="hover:text-white transition">Features</a></li>
-                            <li><a href="#" class="hover:text-white transition">Pricing</a></li>
-                            <li><a href="#" class="hover:text-white transition">Download</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold mb-4">Company</h4>
-                        <ul class="space-y-2 text-gray-400">
-                            <li><a href="#" class="hover:text-white transition">About</a></li>
-                            <li><a href="#" class="hover:text-white transition">Blog</a></li>
-                            <li><a href="#" class="hover:text-white transition">Contact</a></li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h4 class="font-bold mb-4">Legal</h4>
-                        <ul class="space-y-2 text-gray-400">
-                            <li><a href="#" class="hover:text-white transition">Privacy</a></li>
-                            <li><a href="#" class="hover:text-white transition">Terms</a></li>
-                            <li><a href="#" class="hover:text-white transition">Security</a></li>
-                        </ul>
-                    </div>
+        <footer id="contact" class="bg-gray-900 text-white py-12">
+            <div class="max-w-7xl mx-auto px-6 text-center">
+                <div class="mb-4">
+                    <span class="text-2xl font-bold">🚗 UCarX</span>
                 </div>
-                <div class="border-t border-gray-800 pt-8 text-center text-gray-400">
-                    <p>&copy; 2025 UCarX. All rights reserved. Built with ❤️ for Egyptian car owners</p>
-                </div>
+                <p class="text-gray-400 mb-6">Car management made simple</p>
+                <p class="text-gray-500 text-sm">&copy; 2025 UCarX. All rights reserved.</p>
             </div>
         </footer>
     </main>
