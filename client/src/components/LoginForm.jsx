@@ -1,17 +1,76 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext.jsx';
+
+const OTP_LENGTH = 6;
+
+const createEmptyOtp = () => Array(OTP_LENGTH).fill('');
 
 export default function LoginForm() {
   try {
-    const [step, setStep] = useState('phone');
-    const [phone, setPhone] = useState('');
-    const [otp, setOtp] = useState(['', '', '', '', '', '']);
+    const { sendOtp, verifyOtp, loginWithPassword } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
 
-    const handlePhoneSubmit = (event) => {
+    const initialState = useMemo(
+      () => ({
+        phone: location.state?.phone || '',
+        step: location.state?.step || (location.state?.phone ? 'otp' : 'phone'),
+        otpPreview: location.state?.otpPreview || ''
+      }),
+      [location.state]
+    );
+
+    const [step, setStep] = useState(initialState.step);
+    const [phone, setPhone] = useState(initialState.phone);
+    const [otp, setOtp] = useState(
+      initialState.otpPreview ? initialState.otpPreview.split('').slice(0, OTP_LENGTH) : createEmptyOtp()
+    );
+    const [password, setPassword] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [error, setError] = useState('');
+    const [info, setInfo] = useState(initialState.otpPreview ? `Dev OTP: ${initialState.otpPreview}` : '');
+
+    const from = location.state?.from || '/dashboard';
+
+    useEffect(() => {
+      if (initialState.phone) {
+        setPhone(initialState.phone);
+      }
+      if (initialState.step) {
+        setStep(initialState.step);
+      }
+      if (initialState.otpPreview) {
+        setOtp(initialState.otpPreview.split('').slice(0, OTP_LENGTH));
+        setInfo(`Dev OTP: ${initialState.otpPreview}`);
+      }
+    }, [initialState.phone, initialState.step, initialState.otpPreview]);
+
+    const normalizedPhone = (value) => value.replace(/\D/g, '');
+
+    const handlePhoneSubmit = async (event) => {
       event.preventDefault();
-      if (phone.length >= 10) {
+      const cleaned = normalizedPhone(phone);
+      if (!cleaned) {
+        setError('Please enter a valid phone number.');
+        return;
+      }
+      setIsSubmitting(true);
+      setError('');
+      try {
+        const response = await sendOtp({ phone: cleaned });
+        setPhone(cleaned);
         setStep('otp');
+        setOtp(createEmptyOtp());
+        setInfo(
+          response?.otpPreview
+            ? `Dev OTP: ${response.otpPreview}`
+            : 'Enter the 6-digit code we just sent to your phone.'
+        );
+      } catch (err) {
+        setError(err.message || 'Unable to send OTP. Please try again.');
+      } finally {
+        setIsSubmitting(false);
       }
     };
 
@@ -20,17 +79,67 @@ export default function LoginForm() {
         const newOtp = [...otp];
         newOtp[index] = value;
         setOtp(newOtp);
-        if (value && index < 5) {
+
+        if (value && index < OTP_LENGTH - 1) {
           const nextInput = document.getElementById(`otp-${index + 1}`);
           nextInput?.focus();
         }
       }
     };
 
-    const handleVerifyOtp = () => {
+    const handleVerifyOtp = async () => {
       const otpCode = otp.join('');
-      if (otpCode.length === 6) {
-        navigate('/dashboard');
+      if (otpCode.length !== OTP_LENGTH) {
+        setError('Please enter the full 6-digit code.');
+        return;
+      }
+      setIsSubmitting(true);
+      setError('');
+      try {
+        await verifyOtp({ phone, code: otpCode });
+        navigate(from, { replace: true });
+      } catch (err) {
+        setError(err.message || 'Invalid OTP. Please try again.');
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
+
+    const handlePasswordLogin = async (event) => {
+      event.preventDefault();
+      const cleaned = normalizedPhone(phone);
+      if (!cleaned || !password) {
+        setError('Please provide both phone number and password.');
+        return;
+      }
+      setIsSubmitting(true);
+      setError('');
+      try {
+        await loginWithPassword({ phone: cleaned, password });
+        navigate(from, { replace: true });
+      } catch (err) {
+        setError(err.message || 'Unable to login with password.');
+      } finally {
+        setIsSubmitting(false);
+      }
+    };
+
+    const handleResendOtp = async () => {
+      if (!phone) return;
+      setIsSubmitting(true);
+      setError('');
+      try {
+        const response = await sendOtp({ phone });
+        setOtp(createEmptyOtp());
+        setInfo(
+          response?.otpPreview
+            ? `Dev OTP: ${response.otpPreview}`
+            : 'Enter the new 6-digit code we just sent to your phone.'
+        );
+      } catch (err) {
+        setError(err.message || 'Unable to resend OTP. Please try again.');
+      } finally {
+        setIsSubmitting(false);
       }
     };
 
@@ -44,6 +153,9 @@ export default function LoginForm() {
             <h1 className="text-3xl font-bold mb-2">Welcome to UCarX</h1>
             <p className="text-gray-600">Your complete car management solution</p>
           </div>
+
+          {error && <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-3 mb-4 rounded">{error}</div>}
+          {info && <div className="bg-blue-50 border-l-4 border-blue-500 text-blue-700 p-3 mb-4 rounded">{info}</div>}
 
           {step === 'phone' ? (
             <form onSubmit={handlePhoneSubmit} className="space-y-6">
@@ -65,25 +177,36 @@ export default function LoginForm() {
               </div>
               <button
                 type="submit"
-                className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-all"
+                disabled={isSubmitting}
+                className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                Send OTP
+                {isSubmitting ? 'Sending...' : 'Send OTP'}
               </button>
               <div className="relative my-6">
                 <div className="absolute inset-0 flex items-center">
                   <div className="w-full border-t border-gray-300" />
                 </div>
                 <div className="relative flex justify-center text-sm">
-                  <span className="px-2 bg-white text-gray-500">Or continue with</span>
+                  <span className="px-2 bg-white text-gray-500">or sign in with password</span>
                 </div>
               </div>
-              <button
-                type="button"
-                className="w-full border-2 border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-all flex items-center justify-center space-x-2"
-              >
-                <div className="icon-chrome text-xl" />
-                <span>Google</span>
-              </button>
+              <div className="space-y-4">
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  placeholder="Password"
+                  className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] outline-none"
+                />
+                <button
+                  type="button"
+                  onClick={handlePasswordLogin}
+                  disabled={isSubmitting}
+                  className="w-full border-2 border-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-50 transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? 'Signing in...' : 'Login with Password'}
+                </button>
+              </div>
               <p className="text-center text-sm text-gray-600">
                 New user?{' '}
                 <a href="/register" className="text-[var(--primary-color)] font-semibold">
@@ -113,13 +236,24 @@ export default function LoginForm() {
               <button
                 type="button"
                 onClick={handleVerifyOtp}
-                className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-semibold hover:opacity-90"
+                disabled={isSubmitting}
+                className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-semibold hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                Verify
+                {isSubmitting ? 'Verifying...' : 'Verify'}
               </button>
-              <button type="button" onClick={() => setStep('phone')} className="w-full text-gray-600 py-2">
-                Change number
-              </button>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                <button
+                  type="button"
+                  onClick={handleResendOtp}
+                  disabled={isSubmitting}
+                  className="text-[var(--primary-color)] font-semibold hover:underline disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  Resend OTP
+                </button>
+                <button type="button" onClick={() => setStep('phone')} className="text-gray-600 hover:underline">
+                  Change number
+                </button>
+              </div>
             </div>
           )}
         </div>

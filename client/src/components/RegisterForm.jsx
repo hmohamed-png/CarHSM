@@ -1,32 +1,58 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { trickleCreateObject } from '../utils/apiClient.js';
+import { useAuth } from '../context/AuthContext.jsx';
 
 export default function RegisterForm() {
   try {
+    const { register } = useAuth();
     const [formData, setFormData] = useState({
       name: '',
       phone: '',
       email: '',
+      password: '',
       terms: false
     });
+    const [error, setError] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const navigate = useNavigate();
+
+    const normalizePhone = (value) => value.replace(/\D/g, '');
 
     const handleSubmit = async (event) => {
       event.preventDefault();
-      if (!formData.terms) return;
+      if (!formData.terms) {
+        setError('Please agree to the terms to continue.');
+        return;
+      }
+
+      const cleanedPhone = normalizePhone(formData.phone);
+      if (!cleanedPhone) {
+        setError('Please provide a valid phone number.');
+        return;
+      }
+
+      setIsSubmitting(true);
+      setError('');
       try {
-        await trickleCreateObject('user', {
-          Name: formData.name,
-          Phone: `+20${formData.phone}`,
-          Email: formData.email,
-          NotificationsEnabled: true,
-          DarkMode: false,
-          Language: 'English'
+        const result = await register({
+          name: formData.name,
+          phone: cleanedPhone,
+          email: formData.email,
+          password: formData.password || undefined
         });
-        navigate('/dashboard');
-      } catch (error) {
-        console.error('Registration error:', error);
+
+        navigate('/login', {
+          replace: true,
+          state: {
+            phone: cleanedPhone,
+            step: 'otp',
+            otpPreview: result?.otpPreview
+          }
+        });
+      } catch (err) {
+        setError(err.message || 'Unable to complete registration. Please try again.');
+      } finally {
+        setIsSubmitting(false);
       }
     };
 
@@ -40,6 +66,8 @@ export default function RegisterForm() {
             <h1 className="text-3xl font-bold mb-2">Create Account</h1>
             <p className="text-gray-600">Join UCarX today</p>
           </div>
+
+          {error && <div className="bg-red-50 border-l-4 border-red-500 text-red-700 p-3 mb-4 rounded">{error}</div>}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -77,6 +105,16 @@ export default function RegisterForm() {
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] outline-none"
               />
             </div>
+            <div>
+              <label className="block text-sm font-semibold mb-2">Password (Optional)</label>
+              <input
+                type="password"
+                value={formData.password}
+                onChange={(event) => setFormData((prev) => ({ ...prev, password: event.target.value }))}
+                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] outline-none"
+                placeholder="Set a password for fallback login"
+              />
+            </div>
             <div className="flex items-start space-x-2">
               <input
                 type="checkbox"
@@ -97,8 +135,12 @@ export default function RegisterForm() {
                 </a>
               </label>
             </div>
-            <button type="submit" className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-semibold hover:opacity-90">
-              Create Account
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-[var(--primary-color)] text-white py-3 rounded-lg font-semibold hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {isSubmitting ? 'Creating account...' : 'Create Account'}
             </button>
             <p className="text-center text-sm text-gray-600">
               Already have an account?{' '}

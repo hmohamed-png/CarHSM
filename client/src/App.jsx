@@ -18,27 +18,133 @@ import AIAssistantPage from './pages/AIAssistantPage.jsx';
 import WhatsAppSettingsPage from './pages/WhatsAppSettingsPage.jsx';
 import ProfilePage from './pages/ProfilePage.jsx';
 import RemindersPage from './pages/RemindersPage.jsx';
+import RequireAuth from './components/RequireAuth.jsx';
 
 const App = () => (
   <Routes>
     <Route path="/" element={<LandingPage />} />
-    <Route path="/dashboard" element={<DashboardPage />} />
-    <Route path="/vehicles" element={<VehiclesPage />} />
-    <Route path="/add-maintenance" element={<AddMaintenancePage />} />
-    <Route path="/fuel-tracking" element={<FuelTrackingPage />} />
-    <Route path="/analytics" element={<AnalyticsPage />} />
-    <Route path="/marketplace" element={<MarketplacePage />} />
-    <Route path="/marketplace/create" element={<CreateListingPage />} />
-    <Route path="/documents" element={<DocumentsPage />} />
-    <Route path="/notifications" element={<NotificationsPage />} />
-    <Route path="/services" element={<ServicesPage />} />
-    <Route path="/traffic-fines" element={<TrafficFinesPage />} />
+    <Route
+      path="/dashboard"
+      element={
+        <RequireAuth>
+          <DashboardPage />
+        </RequireAuth>
+      }
+    />
+    <Route
+      path="/vehicles"
+      element={
+        <RequireAuth>
+          <VehiclesPage />
+        </RequireAuth>
+      }
+    />
+    <Route
+      path="/add-maintenance"
+      element={
+        <RequireAuth>
+          <AddMaintenancePage />
+        </RequireAuth>
+      }
+    />
+    <Route
+      path="/fuel-tracking"
+      element={
+        <RequireAuth>
+          <FuelTrackingPage />
+        </RequireAuth>
+      }
+    />
+    <Route
+      path="/analytics"
+      element={
+        <RequireAuth>
+          <AnalyticsPage />
+        </RequireAuth>
+      }
+    />
+    <Route
+      path="/marketplace"
+      element={
+        <RequireAuth>
+          <MarketplacePage />
+        </RequireAuth>
+      }
+    />
+    <Route
+      path="/marketplace/create"
+      element={
+        <RequireAuth>
+          <CreateListingPage />
+        </RequireAuth>
+      }
+    />
+    <Route
+      path="/documents"
+      element={
+        <RequireAuth>
+          <DocumentsPage />
+        </RequireAuth>
+      }
+    />
+    <Route
+      path="/notifications"
+      element={
+        <RequireAuth>
+          <NotificationsPage />
+        </RequireAuth>
+      }
+    />
+    <Route
+      path="/services"
+      element={
+        <RequireAuth>
+          <ServicesPage />
+        </RequireAuth>
+      }
+    />
+    <Route
+      path="/traffic-fines"
+      element={
+        <RequireAuth>
+          <TrafficFinesPage />
+        </RequireAuth>
+      }
+    />
     <Route path="/login" element={<LoginPage />} />
     <Route path="/register" element={<RegisterPage />} />
-    <Route path="/ai-assistant" element={<AIAssistantPage />} />
-    <Route path="/whatsapp-settings" element={<WhatsAppSettingsPage />} />
-    <Route path="/profile" element={<ProfilePage />} />
-    <Route path="/reminders" element={<RemindersPage />} />
+    <Route
+      path="/ai-assistant"
+      element={
+        <RequireAuth>
+          <AIAssistantPage />
+        </RequireAuth>
+      }
+    />
+    <Route
+      path="/whatsapp-settings"
+      element={
+        <RequireAuth>
+          <WhatsAppSettingsPage />
+        </RequireAuth>
+      }
+    />
+    <Route
+      path="/profile"
+      element={
+        <RequireAuth>
+          <ProfilePage />
+        </RequireAuth>
+      }
+    />
+    <Route
+      path="/reminders"
+      element={
+        <RequireAuth>
+          <RemindersPage />
+        </RequireAuth>
+      }
+    />
     <Route path="*" element={<LandingPage />} />
   </Routes>
 );

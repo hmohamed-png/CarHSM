@@ -10,35 +10,66 @@ const determineBaseUrl = () => {
 
 const API_ROOT = determineBaseUrl().replace(/\/$/, '');
 
+let accessToken = null;
+
+export function setAccessToken(token) {
+  accessToken = token || null;
+}
+
+export function clearAccessToken() {
+  accessToken = null;
+}
+
 async function apiRequest(endpoint, { method = 'GET', body, headers = {} } = {}) {
   const options = {
     method,
     headers: {
+      Accept: 'application/json',
       ...headers
-    }
+    },
+    credentials: 'include'
   };
+
+  if (accessToken) {
+    options.headers.Authorization = `Bearer ${accessToken}`;
+  }
 
   if (body !== undefined) {
     options.body = JSON.stringify(body);
-    options.headers['Content-Type'] = options.headers['Content-Type'] || 'application/json';
+    if (!options.headers['Content-Type']) {
+      options.headers['Content-Type'] = 'application/json';
+    }
   }
 
-  const response = await fetch(`${API_ROOT}${endpoint}`, options);
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(errorText || `API request failed (${response.status})`);
-  }
-
-  if (response.status === 204) {
-    return null;
+  let response;
+  try {
+    response = await fetch(`${API_ROOT}${endpoint}`, options);
+  } catch (error) {
+    throw new Error('Unable to reach the server. Please check your network connection.');
   }
 
   const contentType = response.headers.get('content-type') || '';
-  if (contentType.includes('application/json')) {
-    return response.json();
+  const isJson = contentType.includes('application/json');
+  const hasBody = response.status !== 204 && response.headers.get('content-length') !== '0';
+
+  let data = null;
+  if (isJson && hasBody) {
+    try {
+      data = await response.json();
+    } catch (error) {
+      // ignore JSON parse errors for non-JSON responses
+    }
   }
 
-  return null;
+  if (!response.ok) {
+    const message = (data && data.message) || `API request failed (${response.status})`;
+    const error = new Error(message);
+    error.status = response.status;
+    error.details = data;
+    throw error;
+  }
+
+  return data;
 }
 
 export async function trickleListObjects(type, limit = 50, includeMetadata = true) {
@@ -87,6 +118,34 @@ export async function invokeAIAgent(systemPrompt, userMessage) {
 
 export async function trickleResetStore() {
   await apiRequest('/api/reset', { method: 'POST' });
+}
+
+export function authRegister(payload) {
+  return apiRequest('/api/auth/register', { method: 'POST', body: payload });
+}
+
+export function authSendOtp(payload) {
+  return apiRequest('/api/auth/otp/send', { method: 'POST', body: payload });
+}
+
+export function authVerifyOtp(payload) {
+  return apiRequest('/api/auth/otp/verify', { method: 'POST', body: payload });
+}
+
+export function authLogin(payload) {
+  return apiRequest('/api/auth/login', { method: 'POST', body: payload });
+}
+
+export function authRefresh() {
+  return apiRequest('/api/auth/refresh', { method: 'POST' });
+}
+
+export function authLogout() {
+  return apiRequest('/api/auth/logout', { method: 'POST' });
+}
+
+export function authMe() {
+  return apiRequest('/api/auth/me');
 }
 
 if (typeof window !== 'undefined') {

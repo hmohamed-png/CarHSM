@@ -1,20 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { trickleListObjects } from '../utils/apiClient.js';
+import { useAuth } from '../context/AuthContext.jsx';
 
 export default function ProfilePage() {
   try {
-    const [user, setUser] = useState(null);
+    const { user, logout } = useAuth();
     const [stats, setStats] = useState({ vehicles: 0, maintenance: 0, spent: 0 });
     const navigate = useNavigate();
 
     useEffect(() => {
-      const loadUserData = async () => {
+      const loadStats = async () => {
         try {
-          const users = await trickleListObjects('user', 1, true);
-          if (users.items && users.items.length > 0) {
-            setUser(users.items[0]);
-          }
           const vehicles = await trickleListObjects('vehicle', 100, true);
           const maintenance = await trickleListObjects('maintenance', 100, true);
           const totalSpent =
@@ -25,18 +22,23 @@ export default function ProfilePage() {
             spent: totalSpent
           });
         } catch (error) {
-          console.error('Error loading user data:', error);
+          console.error('Error loading account statistics:', error);
         }
       };
 
-      loadUserData();
-    }, []);
+      if (user) {
+        loadStats();
+      }
+    }, [user]);
 
-    const handleLogout = () => {
-      navigate('/login');
+    const handleLogout = async () => {
+      await logout();
+      navigate('/login', { replace: true });
     };
 
-    if (!user) return <div className="p-8 text-center">Loading...</div>;
+    if (!user) {
+      return <div className="p-8 text-center">Loading profile...</div>;
+    }
 
     return (
       <div className="max-w-4xl mx-auto px-4 py-8">
@@ -46,9 +48,9 @@ export default function ProfilePage() {
               <div className="icon-user text-4xl text-white" />
             </div>
             <div className="flex-1">
-              <h1 className="text-3xl font-bold">{user.objectData.Name || 'User'}</h1>
-              <p className="text-gray-600">{user.objectData.Phone}</p>
-              <p className="text-gray-600">{user.objectData.Email || 'No email'}</p>
+              <h1 className="text-3xl font-bold">{user.name || 'User'}</h1>
+              <p className="text-gray-600">{user.phone}</p>
+              <p className="text-gray-600">{user.email || 'No email'}</p>
               <p className="text-sm text-gray-500 mt-1">
                 Member since {new Date(user.createdAt).toLocaleDateString()}
               </p>
@@ -86,7 +88,7 @@ export default function ProfilePage() {
                 <span className="font-semibold">Notifications</span>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" defaultChecked={user.objectData.NotificationsEnabled} />
+                <input type="checkbox" className="sr-only peer" defaultChecked={user.notificationsEnabled} />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--primary-color)]" />
               </label>
             </div>
@@ -96,7 +98,7 @@ export default function ProfilePage() {
                 <span className="font-semibold">Dark Mode</span>
               </div>
               <label className="relative inline-flex items-center cursor-pointer">
-                <input type="checkbox" className="sr-only peer" defaultChecked={user.objectData.DarkMode} />
+                <input type="checkbox" className="sr-only peer" defaultChecked={user.darkMode} />
                 <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--primary-color)]" />
               </label>
             </div>

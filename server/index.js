@@ -24,8 +24,17 @@ const prisma = new PrismaClient();
 const collectionConfig = createCollectionConfig(prisma);
 const { router: authRouter } = createAuthModule({ prisma });
 
+const corsOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',').map((value) => value.trim())
+  : true;
+const corsOptions = {
+  origin: corsOrigins,
+  credentials: true
+};
+
 const app = express();
-app.use(cors());
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api/auth', authRouter);
