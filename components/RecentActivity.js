@@ -36,7 +36,7 @@ function RecentActivity() {
                   <div className="icon-check text-lg text-green-600"></div>
                 </div>
                 <div className="flex-1">
-                  <p className="font-semibold">{activity.objectData.serviceType}</p>
+                    <p className="font-semibold">{activity.objectData.ServiceType || activity.objectData.serviceType || 'Maintenance'}</p>
                   <p className="text-sm text-gray-500">{new Date(activity.createdAt).toLocaleDateString()}</p>
                 </div>
               </div>

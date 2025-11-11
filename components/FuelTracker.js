@@ -49,6 +49,10 @@ function FuelTracker() {
     };
 
     const createChart = () => {
+      if (!ChartJS) {
+        console.warn('Chart.js is not available. Skipping fuel chart rendering.');
+        return;
+      }
       const filtered = fuelRecords.filter(r => r.objectData.VehicleId === selectedVehicle).slice(-10);
       const ctx = document.getElementById('fuelChart');
       if (ctx && chartRef.current) chartRef.current.destroy();
@@ -113,10 +117,14 @@ function FuelTracker() {
               </div>
             </div>
 
-            <div className="bg-white rounded-xl shadow p-6 mb-8">
-              <h2 className="text-xl font-bold mb-4">Fuel Cost Trend</h2>
-              <canvas id="fuelChart"></canvas>
-            </div>
+              <div className="bg-white rounded-xl shadow p-6 mb-8">
+                <h2 className="text-xl font-bold mb-4">Fuel Cost Trend</h2>
+                {ChartJS ? (
+                  <canvas id="fuelChart"></canvas>
+                ) : (
+                  <p className="text-sm text-gray-500">Chart.js failed to load, so the chart is unavailable. Please refresh the page.</p>
+                )}
+              </div>
 
             <div className="bg-white rounded-xl shadow p-6">
               <h2 className="text-xl font-bold mb-4">Recent Fill-ups</h2>

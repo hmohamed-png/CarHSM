@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - develop
+      - staging
+      - "**/feature/**"
+
+jobs:
+  prisma:
+    name: Prisma Schema & Seed
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: ucarx_ci
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/ucarx_ci?schema=public
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install server dependencies
+        working-directory: server
+        run: npm ci
+
+      - name: Generate Prisma client
+        working-directory: server
+        run: npm run prisma:generate
+
+      - name: Apply migrations
+        working-directory: server
+        run: npm run prisma:deploy
+
+      - name: Seed database
+        working-directory: server
+        run: npm run prisma:seed
+
+      - name: Smoke check REST API
+        working-directory: server
+        run: |
+          npm start &
+          SERVER_PID=$!
+          npx wait-on http://127.0.0.1:4000/api/vehicle
+          curl --fail http://127.0.0.1:4000/api/vehicle | head
+          kill $SERVER_PID

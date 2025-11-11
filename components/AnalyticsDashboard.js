@@ -14,10 +14,10 @@ function AnalyticsDashboard() {
         const maintenance = await trickleListObjects('maintenance', 500, true);
         const vehicles = await trickleListObjects('vehicle', 100, true);
         const records = maintenance.items || [];
-        
+
         const total = records.reduce((sum, r) => sum + (r.objectData.Cost || 0), 0);
         const avgPerService = records.length > 0 ? total / records.length : 0;
-        
+
         const byType = {};
         records.forEach(r => {
           const type = r.objectData.ServiceType || 'Other';
@@ -26,7 +26,7 @@ function AnalyticsDashboard() {
         const mostExpensive = Object.keys(byType).reduce((a, b) => byType[a] > byType[b] ? a : b, 'N/A');
 
         setStats({ total, avgPerService, mostExpensive, vehicleCount: vehicles.items?.length || 0 });
-        
+
         createMonthlyChart(records);
         createTypeChart(byType);
       } catch (error) {
@@ -37,16 +37,20 @@ function AnalyticsDashboard() {
     };
 
     const createMonthlyChart = (records) => {
+      if (!ChartJS) {
+        console.warn('Chart.js is not available. Skipping monthly chart rendering.');
+        return;
+      }
       const monthlyData = {};
       records.forEach(r => {
         const month = new Date(r.objectData.Date || r.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
         monthlyData[month] = (monthlyData[month] || 0) + (r.objectData.Cost || 0);
       });
-      
+
       const sortedMonths = Object.keys(monthlyData).sort((a, b) => new Date(a) - new Date(b)).slice(-6);
       const ctx = document.getElementById('monthlyChart');
       if (ctx && monthlyChartRef.current) monthlyChartRef.current.destroy();
-      
+
       if (ctx) {
         monthlyChartRef.current = new ChartJS(ctx, {
           type: 'bar',
@@ -64,9 +68,13 @@ function AnalyticsDashboard() {
     };
 
     const createTypeChart = (byType) => {
+      if (!ChartJS) {
+        console.warn('Chart.js is not available. Skipping type chart rendering.');
+        return;
+      }
       const ctx = document.getElementById('typeChart');
       if (ctx && typeChartRef.current) typeChartRef.current.destroy();
-      
+
       if (ctx) {
         typeChartRef.current = new ChartJS(ctx, {
           type: 'doughnut',

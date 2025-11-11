@@ -1,0 +1,94 @@
+/* Global styles for UCarX */
+:root {
+  --primary-color: #DC143C;
+  --secondary-color: #1a1a1a;
+  --accent-color: #FFD700;
+  --bg-light: #f8f9fa;
+  --text-dark: #1f2933;
+  --text-light: #4b5563;
+}
+
+body {
+  color: var(--text-dark);
+  background-color: #ffffff;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  background: linear-gradient(135deg, var(--primary-color), #a40828);
+  color: #ffffff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  box-shadow: 0 10px 25px -15px rgba(220, 20, 60, 0.9);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 35px -18px rgba(220, 20, 60, 0.9);
+  opacity: 0.95;
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  border-radius: 0.75rem;
+  border: 2px solid var(--secondary-color);
+  color: var(--secondary-color);
+  background-color: transparent;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--secondary-color);
+  color: #ffffff;
+}
+
+.feature-card {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.9));
+  border-radius: 1rem;
+  padding: 1.5rem;
+  box-shadow: 0 10px 25px -18px rgba(15, 23, 42, 0.4);
+  border: 1px solid rgba(15, 23, 42, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px -20px rgba(15, 23, 42, 0.45);
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.45s ease-in;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.45s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
