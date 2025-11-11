@@ -30,6 +30,7 @@ This repository now ships a fully working front-end backed by an Express API (`s
    cd server
    cp .env.example .env
    # edit DATABASE_URL=... to point at your database
+   # set JWT_SECRET and SESSION_COOKIE_NAME (defaults work for local dev)
    ```
 3. Install dependencies and prepare the schema + seed data:
    ```bash
@@ -48,6 +49,20 @@ After evolving the schema, generate a migration and commit it alongside your cha
 ```bash
 npm run prisma:migrate -- --name meaningful-change
 ```
+
+### Authentication API
+
+The API now ships with phone-based auth and JWT-backed sessions:
+
+- `POST /api/auth/register` – create a user (returns OTP preview in non-production mode).
+- `POST /api/auth/otp/send` – re-send a login OTP.
+- `POST /api/auth/otp/verify` – verify OTP, set secure session cookie, return `accessToken`.
+- `POST /api/auth/login` – password fallback (optional).
+- `POST /api/auth/refresh` – mint a fresh access token from the session cookie.
+- `POST /api/auth/logout` – revoke current session.
+- `GET /api/auth/me` – fetch the authenticated profile.
+
+All mutating routes issue a short-lived JWT (`Authorization: Bearer ...`) and an HTTP-only cookie (`ucarx.sid` by default) for refresh semantics.
 
 ### 2. Run the client (Vite)
 

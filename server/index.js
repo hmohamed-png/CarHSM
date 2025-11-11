@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const { PrismaClient } = require('@prisma/client');
 const {
   createCollectionConfig,
@@ -11,6 +12,7 @@ const {
   cleanDataForWrite,
   generateObjectId
 } = require('./collections');
+const { createAuthModule } = require('./auth');
 
 const PORT = process.env.PORT || 4000;
 const ROOT_DIR = path.join(__dirname, '..');
@@ -20,10 +22,13 @@ const SEED_FILE = path.join(__dirname, 'seed.json');
 
 const prisma = new PrismaClient();
 const collectionConfig = createCollectionConfig(prisma);
+const { router: authRouter } = createAuthModule({ prisma });
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
+app.use('/api/auth', authRouter);
 
 function resolveField(payload, field) {
   if (payload[field] !== undefined) return payload[field];

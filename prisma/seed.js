@@ -19,6 +19,7 @@ async function main() {
     'fuel_record',
     'reminder',
     'traffic_fine',
+    'payment',
     'document',
     'notification',
     'marketplace_listing',
@@ -35,6 +36,7 @@ async function main() {
 
   const createOrder = [
     'user',
+    'payment',
     'vehicle',
     'maintenance',
     'fuel_record',

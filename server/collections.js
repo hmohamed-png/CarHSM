@@ -35,7 +35,10 @@ const transformers = {
       mileage: coerceIntOptional(input.Mileage),
       cost: coerceFloatOptional(input.Cost),
       notes: coerceStringOptional(input.Notes),
-      nextServiceMileage: coerceIntOptional(input.NextServiceMileage)
+      nextServiceMileage: coerceIntOptional(input.NextServiceMileage),
+      invoiceAmount: coerceFloatOptional(input.InvoiceAmount ?? input.invoiceAmount),
+      paymentStatus: coercePaymentStatusOptional(input.PaymentStatus ?? input.paymentStatus),
+      paymentId: coerceStringOptional(input.PaymentId ?? input.paymentId)
     }),
     to: (record) => ({
       VehicleId: record.vehicleId,
@@ -44,7 +47,10 @@ const transformers = {
       Mileage: record.mileage,
       Cost: record.cost,
       Notes: record.notes,
-      NextServiceMileage: record.nextServiceMileage
+      NextServiceMileage: record.nextServiceMileage,
+      InvoiceAmount: record.invoiceAmount,
+      PaymentStatus: record.paymentStatus,
+      PaymentId: record.paymentId
     })
   },
   reminder: {
@@ -102,7 +108,9 @@ const transformers = {
       location: coerceString(input.Location),
       date: coerceDate(input.Date),
       dueDate: coerceDate(input.DueDate),
-      paymentReference: coerceStringOptional(input.PaymentReference)
+      paymentReference: coerceStringOptional(input.PaymentReference),
+      paymentStatus: coercePaymentStatusOptional(input.PaymentStatus ?? input.paymentStatus),
+      paymentId: coerceStringOptional(input.PaymentId ?? input.paymentId)
     }),
     to: (record) => ({
       VehicleId: record.vehicleId,
@@ -112,7 +120,9 @@ const transformers = {
       Location: record.location,
       Date: record.date.toISOString(),
       DueDate: record.dueDate.toISOString(),
-      PaymentReference: record.paymentReference
+      PaymentReference: record.paymentReference,
+      PaymentStatus: record.paymentStatus,
+      PaymentId: record.paymentId
     })
   },
   marketplace_listing: {
@@ -229,14 +239,46 @@ const transformers = {
       phone: coerceString(input.Phone),
       email: coerceStringOptional(input.Email),
       notificationsEnabled: coerceBooleanOptional(input.NotificationsEnabled),
-      darkMode: coerceBooleanOptional(input.DarkMode)
+      darkMode: coerceBooleanOptional(input.DarkMode),
+      role: coerceUserRoleOptional(input.Role ?? input.role)
     }),
     to: (record) => ({
       Name: record.name,
       Phone: record.phone,
       Email: record.email,
       NotificationsEnabled: record.notificationsEnabled,
-      DarkMode: record.darkMode
+      DarkMode: record.darkMode,
+      Role: record.role
+    })
+  },
+  payment: {
+    modelName: 'payment',
+    idPrefix: 'payment',
+    orderBy: { createdAt: 'desc' },
+    requiredFields: ['UserId', 'Amount', 'TargetType'],
+    from: (input) => ({
+      userId: coerceString(input.UserId),
+      amount: coerceDecimal(input.Amount),
+      currency: coerceStringOptional(input.Currency) ?? 'EGP',
+      targetType: coercePaymentTargetType(input.TargetType ?? input.targetType),
+      targetId: coerceStringOptional(input.TargetId ?? input.targetId),
+      status: coercePaymentStatusOptional(input.Status ?? input.status),
+      provider: coercePaymentProviderOptional(input.Provider ?? input.provider),
+      reference: coerceStringOptional(input.Reference ?? input.reference),
+      expiresAt: coerceDateOptional(input.ExpiresAt ?? input.expiresAt),
+      payload: input.Payload ?? input.payload ?? null
+    }),
+    to: (record) => ({
+      UserId: record.userId,
+      Amount: record.amount,
+      Currency: record.currency,
+      TargetType: record.targetType,
+      TargetId: record.targetId,
+      Status: record.status,
+      Provider: record.provider,
+      Reference: record.reference,
+      ExpiresAt: record.expiresAt ? record.expiresAt.toISOString() : null,
+      Payload: record.payload
     })
   }
 };
@@ -327,6 +369,53 @@ function coerceFloat(value) {
 function coerceFloatOptional(value) {
   const parsed = coerceFloat(value);
   return parsed === undefined ? undefined : parsed;
+}
+
+function coerceDecimal(value) {
+  if (value === undefined || value === null || value === '') return undefined;
+  const numeric = Number(value);
+  if (Number.isNaN(numeric)) {
+    throw new Error(`Invalid decimal value: ${value}`);
+  }
+  return numeric;
+}
+
+function coerceUserRoleOptional(value) {
+  if (value === undefined || value === null || value === '') return undefined;
+  const normalized = String(value).toUpperCase();
+  if (!['OWNER', 'VIEWER'].includes(normalized)) {
+    throw new Error(`Invalid user role: ${value}`);
+  }
+  return normalized;
+}
+
+function coercePaymentStatusOptional(value) {
+  if (value === undefined || value === null || value === '') return undefined;
+  const normalized = String(value).toUpperCase();
+  if (!['PENDING', 'PAID', 'CANCELLED', 'EXPIRED', 'NOT_REQUIRED'].includes(normalized)) {
+    throw new Error(`Invalid payment status: ${value}`);
+  }
+  return normalized;
+}
+
+function coercePaymentProviderOptional(value) {
+  if (value === undefined || value === null || value === '') return undefined;
+  const normalized = String(value).toUpperCase();
+  if (!['MOCK', 'FAWRY'].includes(normalized)) {
+    throw new Error(`Invalid payment provider: ${value}`);
+  }
+  return normalized;
+}
+
+function coercePaymentTargetType(value) {
+  if (!value && value !== 0) {
+    throw new Error('Payment target type is required');
+  }
+  const normalized = String(value).toUpperCase();
+  if (!['TRAFFIC_FINE', 'MAINTENANCE'].includes(normalized)) {
+    throw new Error(`Invalid payment target type: ${value}`);
+  }
+  return normalized;
 }
 
 function coerceBooleanOptional(value) {
