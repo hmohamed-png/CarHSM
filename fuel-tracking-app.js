@@ -1,4 +1,4 @@
-const ChartJS = window.Chart;
+const ChartJS = window.Chart || null;
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
