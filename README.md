@@ -43,6 +43,12 @@ This repository now ships a fully working front-end backed by an Express API (`s
 
 The server exposes RESTful endpoints under `/api/*` and also serves the compiled client (when `client/dist` exists).
 
+After evolving the schema, generate a migration and commit it alongside your changes:
+
+```bash
+npm run prisma:migrate -- --name meaningful-change
+```
+
 ### 2. Run the client (Vite)
 
 ```bash
@@ -82,17 +88,22 @@ Two options:
 
 - `client/` – Vite + React app (components, pages, routes, styles).
 - `server/` – Express + Prisma API (PostgreSQL schema, seed data, routes).
+- `prisma/` – Prisma schema, migrations, and the reusable seed tooling.
 - `utils/` (legacy) – Kept for reference while migrating from the static prototype.
 - `styles.css` – Shared styles (buttons, cards, animations) mirrored in the Vite app.
 - `trickle/` – Notes, schema references, and future back-end documentation.
 
+## Continuous Integration
+
+- GitHub Actions workflow (`.github/workflows/ci.yml`) provisions Postgres 16, installs server dependencies, runs Prisma migrations, seeds demo data, and smoke tests the REST API on every push or pull request.
+- Override `DATABASE_URL` with repository/environment secrets in CI when targeting hosted databases.
+
 ## Next Steps / Enhancement Roadmap
 
-1. **Add migrations & migrations CI** – commit generated Prisma migrations and wire `npm run prisma:deploy` into the release pipeline.
-2. **Authentication & payments** – integrate real OTP, Fawry gateway (or alternative) and secure document storage.
-3. **Observability & QA** – add unit tests (Jest/RTL), Playwright smoke tests, plus CI (GitHub Actions) to lint/build before deployment.
-4. **UX polish** – add skeleton states, accessibility passes (focus outlines, aria labels), Arabic localisation, dark mode toggle, and PWA capabilities.
-5. **AI Assistant backend** – connect `invokeAIAgent` to your preferred LLM provider and maintain conversation history per user session.
+1. **Authentication & payments** – integrate real OTP, Fawry gateway (or alternative) and secure document storage.
+2. **Observability & QA** – add unit tests (Jest/RTL), Playwright smoke tests, plus CI (GitHub Actions) to lint/build before deployment.
+3. **UX polish** – add skeleton states, accessibility passes (focus outlines, aria labels), Arabic localisation, dark mode toggle, and PWA capabilities.
+4. **AI Assistant backend** – connect `invokeAIAgent` to your preferred LLM provider and maintain conversation history per user session.
 
 ## Contributing
 
