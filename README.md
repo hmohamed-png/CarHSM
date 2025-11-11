@@ -2,7 +2,7 @@
 
 UCarX is a multi-page React (CDN) experience that helps Egyptian drivers stay on top of vehicles, maintenance, reminders, fines, marketplace listings, and more—all without needing a complex backend to get started.
 
-This repository ships a fully working front-end backed by a lightweight Express API (`server/`) that persists data to JSON files. Run the server locally to explore the product end-to-end, then replace the storage layer with your own infrastructure when ready.
+This repository now ships a fully working front-end backed by an Express API (`server/`) that talks to a PostgreSQL database through Prisma. Run the stack locally to explore the product end-to-end, then scale the same schema into your managed database when you are ready for production.
 
 ## Feature Highlights
 
@@ -18,20 +18,30 @@ This repository ships a fully working front-end backed by a lightweight Express 
 - **React 18** via CDN + Babel (per-page mounting).
 - **TailwindCSS** CDN utility layer, plus handcrafted CSS for shared UI primitives.
 - **Chart.js** (via CDN) for analytics/fuel visualisations (auto-fallback when CDN fails).
-- **Express API + `utils/apiClient.js`** exposing the familiar `trickleListObjects` / `trickleCreateObject` helpers backed by JSON persistence.
+- **Express API + Prisma + PostgreSQL** exposing the familiar `trickleListObjects` / `trickleCreateObject` helpers backed by a relational datastore.
 
 ## Running Locally
 
 ### 1. Start the API
 
-```bash
-cd server
-npm install
-npm run start
-# → http://localhost:4000
-```
+1. Provision PostgreSQL (local Docker, Supabase, Neon, etc.).
+2. Configure your connection string:
+   ```bash
+   cd server
+   cp .env.example .env
+   # edit DATABASE_URL=... to point at your database
+   ```
+3. Install dependencies and prepare the schema + seed data:
+   ```bash
+   npm install
+   npm run prisma:generate
+   npm run prisma:push   # creates tables from prisma/schema.prisma
+   npm run prisma:seed   # loads server/seed.json into the database
+   npm run dev           # or npm start for production mode
+   # → http://localhost:4000
+   ```
 
-The server exposes RESTful endpoints under `/api/*` and also serves the static front-end files from the repository root.
+The server exposes RESTful endpoints under `/api/*` and also serves the compiled client (when `client/dist` exists).
 
 ### 2. Run the client (Vite)
 
@@ -48,11 +58,14 @@ The Vite dev server proxies `/api` calls to the Express backend. Browse via the 
 
 ### Resetting Demo Data
 
-POST to `/api/reset` (or run the snippet below in DevTools) to restore the seeded dataset:
+Two options:
 
-```js
-fetch('/api/reset', { method: 'POST' }).then(() => window.location.reload());
-```
+- Re-run the seed script: `cd server && npm run prisma:seed`
+- Or hit the API reset endpoint (shown below) which truncates the tables and reloads `seed.json`:
+
+  ```js
+  fetch('/api/reset', { method: 'POST' }).then(() => window.location.reload());
+  ```
 
 ## Deploying
 
@@ -68,19 +81,18 @@ fetch('/api/reset', { method: 'POST' }).then(() => window.location.reload());
 ## Project Structure
 
 - `client/` – Vite + React app (components, pages, routes, styles).
-- `server/` – Express API with JSON persistence (development data layer).
+- `server/` – Express + Prisma API (PostgreSQL schema, seed data, routes).
 - `utils/` (legacy) – Kept for reference while migrating from the static prototype.
 - `styles.css` – Shared styles (buttons, cards, animations) mirrored in the Vite app.
 - `trickle/` – Notes, schema references, and future back-end documentation.
 
 ## Next Steps / Enhancement Roadmap
 
-1. **Swap JSON persistence for a production datastore** (Postgres, Supabase, Firebase, etc.). Keep the existing REST contract or evolve it behind `utils/apiClient.js`.
-2. **Production bundling** – migrate the multi-page setup to Vite or Next.js for tree-shaking, code splitting, and asset optimisation.
-3. **Authentication & payments** – integrate real OTP, Fawry gateway (or alternative) and secure document storage.
-4. **Observability & QA** – add unit tests (Jest/RTL), Playwright smoke tests, plus CI (GitHub Actions) to lint/build before deployment.
-5. **UX polish** – add skeleton states, accessibility passes (focus outlines, aria labels), Arabic localisation, dark mode toggle, and PWA capabilities.
-6. **AI Assistant backend** – connect `invokeAIAgent` to your preferred LLM provider and maintain conversation history per user session.
+1. **Add migrations & migrations CI** – commit generated Prisma migrations and wire `npm run prisma:deploy` into the release pipeline.
+2. **Authentication & payments** – integrate real OTP, Fawry gateway (or alternative) and secure document storage.
+3. **Observability & QA** – add unit tests (Jest/RTL), Playwright smoke tests, plus CI (GitHub Actions) to lint/build before deployment.
+4. **UX polish** – add skeleton states, accessibility passes (focus outlines, aria labels), Arabic localisation, dark mode toggle, and PWA capabilities.
+5. **AI Assistant backend** – connect `invokeAIAgent` to your preferred LLM provider and maintain conversation history per user session.
 
 ## Contributing
 

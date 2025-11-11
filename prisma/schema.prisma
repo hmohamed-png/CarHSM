@@ -1,0 +1,141 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Vehicle {
+  id           String         @id @default(cuid())
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  brand        String
+  model        String
+  year         Int
+  plateNumber  String
+  color        String
+  mileage      Int?
+  maintenance  Maintenance[]
+  reminders    Reminder[]
+  fuelRecords  FuelRecord[]
+  trafficFines TrafficFine[]
+  documents    Document[]
+}
+
+model Maintenance {
+  id                 String   @id @default(cuid())
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  vehicleId          String
+  vehicle            Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  serviceType        String
+  date               DateTime
+  mileage            Int?
+  cost               Float?
+  notes              String?
+  nextServiceMileage Int?
+}
+
+model Reminder {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  vehicleId String
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  title     String
+  dueDate   DateTime
+  type      String
+  status    String
+}
+
+model FuelRecord {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  vehicleId String
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  date      DateTime
+  liters    Float
+  cost      Float
+  mileage   Int
+  fullTank  Boolean  @default(true)
+}
+
+model TrafficFine {
+  id                String   @id @default(cuid())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  vehicleId         String
+  vehicle           Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  fineType          String
+  amount            Float
+  status            String
+  location          String
+  date              DateTime
+  dueDate           DateTime
+  paymentReference  String?
+}
+
+model MarketplaceListing {
+  id             String   @id @default(cuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  title          String
+  type           String
+  price          Float
+  mileage        Int
+  brand          String
+  model          String
+  year           Int
+  color          String
+  transmission   String
+  fuelType       String
+  description    String?
+  phoneWhatsApp  String
+  negotiable     Boolean   @default(true)
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String
+  message   String
+  read      Boolean  @default(false)
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  vehicleId String
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  title     String
+  type      String
+  expiryDate DateTime?
+  notes     String?
+}
+
+model ServiceCenter {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  name        String
+  address     String
+  services    String
+  rating      Float
+  reviewCount Int
+}
+
+model User {
+  id                    String   @id @default(cuid())
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  name                  String
+  phone                 String
+  email                 String?
+  notificationsEnabled  Boolean  @default(true)
+  darkMode              Boolean  @default(false)
+}
