@@ -6,6 +6,8 @@ const cors = require('cors');
 
 const PORT = process.env.PORT || 4000;
 const ROOT_DIR = path.join(__dirname, '..');
+const CLIENT_DIST_DIR = path.join(__dirname, '..', 'client', 'dist');
+const STATIC_ROOT = fs.existsSync(CLIENT_DIST_DIR) ? CLIENT_DIST_DIR : ROOT_DIR;
 const DATA_FILE = path.join(__dirname, 'data.json');
 const SEED_FILE = path.join(__dirname, 'seed.json');
 
@@ -209,19 +211,22 @@ app.post('/api/ai', async (req, res) => {
   }
 });
 
-app.use(express.static(ROOT_DIR));
+app.use(express.static(STATIC_ROOT));
 
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api/')) {
     return next();
   }
 
-  const requestedPath = path.join(ROOT_DIR, req.path);
+  const requestedPath = path.join(STATIC_ROOT, req.path);
   fs.stat(requestedPath, (err, stats) => {
     if (!err && stats.isFile()) {
       return res.sendFile(requestedPath);
     }
-    res.sendFile(path.join(ROOT_DIR, 'index.html'));
+    const fallback = fs.existsSync(path.join(STATIC_ROOT, 'index.html'))
+      ? path.join(STATIC_ROOT, 'index.html')
+      : path.join(ROOT_DIR, 'index.html');
+    res.sendFile(fallback);
   });
 });
 

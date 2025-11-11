@@ -33,11 +33,18 @@ npm run start
 
 The server exposes RESTful endpoints under `/api/*` and also serves the static front-end files from the repository root.
 
-### 2. Browse the UI
+### 2. Run the client (Vite)
 
-Open `http://localhost:4000/index.html` and navigate via the header (e.g., `/dashboard.html`, `/fuel-tracking.html`, etc.).
+```bash
+cd client
+npm install
+npm run dev
+# → http://localhost:5173
+```
 
-> ⚠️ If you prefer a separate static dev server, keep the API running on port 4000 and serve the front end elsewhere. The browser scripts default to the same origin, so either proxy `/api` through your static server or set `window.API_BASE_URL` before loading `utils/apiClient.js`.
+The Vite dev server proxies `/api` calls to the Express backend. Browse via the in-app navigation (e.g., `http://localhost:5173/dashboard`, `/fuel-tracking`, etc.).
+
+> ⚠️ For a single origin experience (no Vite dev server), run `npm run build` inside `client/`; the Express server will automatically serve the compiled assets from `client/dist`.
 
 ### Resetting Demo Data
 
@@ -49,20 +56,21 @@ fetch('/api/reset', { method: 'POST' }).then(() => window.location.reload());
 
 ## Deploying
 
-Because every page is self-contained, you can deploy straight to Vercel/Netlify/GitHub Pages. The included `vercel.json` simply sets `version: 2`, allowing Vercel’s static host to serve each HTML file directly.
+1. Build the client:
+   ```bash
+   cd client
+   npm run build
+   ```
+2. The Express server automatically serves `client/dist` when it exists. Deploy the `server/` directory (plus the generated `client/dist`) to your Node hosting provider of choice (Vercel, Render, Fly.io, etc.).
 
-```
-vercel --prod
-```
+> Tip: set `VITE_API_BASE_URL` during the Vite build if your API is hosted on a different origin.
 
 ## Project Structure
 
-- `*.html` – Individual entry pages loading shared components via CDN React+Babel.
-- `components/` – UI components shared across pages.
+- `client/` – Vite + React app (components, pages, routes, styles).
 - `server/` – Express API with JSON persistence (development data layer).
-- `utils/apiClient.js` – Browser helpers that call the API (mirrors the legacy Trickle helper signatures).
-- `utils/carData.js` – Egyptian market brand/model/year reference data.
-- `styles.css` – Shared styles (buttons, cards, animations).
+- `utils/` (legacy) – Kept for reference while migrating from the static prototype.
+- `styles.css` – Shared styles (buttons, cards, animations) mirrored in the Vite app.
 - `trickle/` – Notes, schema references, and future back-end documentation.
 
 ## Next Steps / Enhancement Roadmap
