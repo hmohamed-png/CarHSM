@@ -2,7 +2,7 @@
 
 UCarX is a multi-page React (CDN) experience that helps Egyptian drivers stay on top of vehicles, maintenance, reminders, fines, marketplace listings, and more—all without needing a complex backend to get started.
 
-This repository ships a fully working front-end backed by a lightweight storage layer that runs entirely in the browser (via `localStorage`). You can deploy it statically (e.g., on Vercel) and immediately explore the product, then swap the mock data layer with your own APIs when you are ready for production integrations.
+This repository ships a fully working front-end backed by a lightweight Express API (`server/`) that persists data to JSON files. Run the server locally to explore the product end-to-end, then replace the storage layer with your own infrastructure when ready.
 
 ## Feature Highlights
 
@@ -18,30 +18,33 @@ This repository ships a fully working front-end backed by a lightweight storage 
 - **React 18** via CDN + Babel (per-page mounting).
 - **TailwindCSS** CDN utility layer, plus handcrafted CSS for shared UI primitives.
 - **Chart.js** (via CDN) for analytics/fuel visualisations (auto-fallback when CDN fails).
-- **Mock Trickle client** (`utils/trickleMock.js`) that emulates `trickleListObjects`, `trickleCreateObject`, etc. using `localStorage` so the UI works end-to-end without external services.
+- **Express API + `utils/apiClient.js`** exposing the familiar `trickleListObjects` / `trickleCreateObject` helpers backed by JSON persistence.
 
 ## Running Locally
 
-1. **Serve the project** from the repo root:
-   ```bash
-   # Option A – Python
-   python3 -m http.server 4173
+### 1. Start the API
 
-   # Option B – Vercel CLI or any static server works too
-   npx serve .
-   ```
-2. Visit `http://localhost:4173/index.html` (or the port your server printed).
-3. Navigate the app via the top navigation or direct URLs (e.g., `/dashboard.html`, `/fuel-tracking.html`, etc.).
+```bash
+cd server
+npm install
+npm run start
+# → http://localhost:4000
+```
 
-> ⚠️ Opening the HTML files via `file://` will block `localStorage` on some browsers. Always use a local web server.
+The server exposes RESTful endpoints under `/api/*` and also serves the static front-end files from the repository root.
+
+### 2. Browse the UI
+
+Open `http://localhost:4000/index.html` and navigate via the header (e.g., `/dashboard.html`, `/fuel-tracking.html`, etc.).
+
+> ⚠️ If you prefer a separate static dev server, keep the API running on port 4000 and serve the front end elsewhere. The browser scripts default to the same origin, so either proxy `/api` through your static server or set `window.API_BASE_URL` before loading `utils/apiClient.js`.
 
 ### Resetting Demo Data
 
-The mock data is persisted per browser profile. To restore the seeded sample content open DevTools and run:
+POST to `/api/reset` (or run the snippet below in DevTools) to restore the seeded dataset:
 
 ```js
-trickleResetStore();
-window.location.reload();
+fetch('/api/reset', { method: 'POST' }).then(() => window.location.reload());
 ```
 
 ## Deploying
@@ -56,14 +59,15 @@ vercel --prod
 
 - `*.html` – Individual entry pages loading shared components via CDN React+Babel.
 - `components/` – UI components shared across pages.
-- `utils/trickleMock.js` – In-browser data store & AIAgent mock.
+- `server/` – Express API with JSON persistence (development data layer).
+- `utils/apiClient.js` – Browser helpers that call the API (mirrors the legacy Trickle helper signatures).
 - `utils/carData.js` – Egyptian market brand/model/year reference data.
 - `styles.css` – Shared styles (buttons, cards, animations).
 - `trickle/` – Notes, schema references, and future back-end documentation.
 
 ## Next Steps / Enhancement Roadmap
 
-1. **Replace the mock data layer** with a real backend (REST/GraphQL). Start by porting `trickleMock` to API calls so the UI code stays intact.
+1. **Swap JSON persistence for a production datastore** (Postgres, Supabase, Firebase, etc.). Keep the existing REST contract or evolve it behind `utils/apiClient.js`.
 2. **Production bundling** – migrate the multi-page setup to Vite or Next.js for tree-shaking, code splitting, and asset optimisation.
 3. **Authentication & payments** – integrate real OTP, Fawry gateway (or alternative) and secure document storage.
 4. **Observability & QA** – add unit tests (Jest/RTL), Playwright smoke tests, plus CI (GitHub Actions) to lint/build before deployment.
