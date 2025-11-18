@@ -1,1 +1,120 @@
-[]
+[
+  {
+    "name": "vehicle",
+    "fields": [
+      { "name": "Brand", "type": "text", "required": true },
+      { "name": "Model", "type": "text", "required": true },
+      { "name": "Year", "type": "number", "required": true },
+      { "name": "PlateNumber", "type": "text", "required": true },
+      { "name": "Color", "type": "text", "required": true },
+      { "name": "Mileage", "type": "number", "required": true },
+      { "name": "VIN", "type": "text", "required": false },
+      { "name": "PurchaseDate", "type": "date", "required": false },
+      { "name": "InsuranceExpiry", "type": "date", "required": false },
+      { "name": "LicenseExpiry", "type": "date", "required": false }
+    ]
+  },
+  {
+    "name": "maintenance",
+    "fields": [
+      { "name": "VehicleId", "type": "text", "required": true },
+      { "name": "ServiceType", "type": "text", "required": true },
+      { "name": "ServiceCenter", "type": "text", "required": true },
+      { "name": "Date", "type": "date", "required": true },
+      { "name": "Mileage", "type": "number", "required": true },
+      { "name": "Cost", "type": "number", "required": true },
+      { "name": "Description", "type": "text", "required": false },
+      { "name": "NextServiceMileage", "type": "number", "required": false },
+      { "name": "NextServiceDate", "type": "date", "required": false },
+      { "name": "ReceiptPhoto", "type": "text", "required": false }
+    ]
+  },
+  {
+    "name": "reminder",
+    "fields": [
+      { "name": "VehicleId", "type": "text", "required": true },
+      { "name": "Title", "type": "text", "required": true },
+      { "name": "Type", "type": "text", "required": true },
+      { "name": "DueDate", "type": "date", "required": true },
+      { "name": "Description", "type": "text", "required": false },
+      { "name": "IsCompleted", "type": "boolean", "required": false },
+      { "name": "NotifyDaysBefore", "type": "number", "required": false }
+    ]
+  },
+  {
+    "name": "fuel_log",
+    "fields": [
+      { "name": "VehicleId", "type": "text", "required": true },
+      { "name": "Date", "type": "date", "required": true },
+      { "name": "Mileage", "type": "number", "required": true },
+      { "name": "Liters", "type": "number", "required": true },
+      { "name": "Cost", "type": "number", "required": true },
+      { "name": "PricePerLiter", "type": "number", "required": true },
+      { "name": "FuelType", "type": "text", "required": true },
+      { "name": "Station", "type": "text", "required": false },
+      { "name": "FullTank", "type": "boolean", "required": false }
+    ]
+  },
+  {
+    "name": "marketplace_listing",
+    "fields": [
+      { "name": "VehicleId", "type": "text", "required": true },
+      { "name": "Title", "type": "text", "required": true },
+      { "name": "Price", "type": "number", "required": true },
+      { "name": "Description", "type": "text", "required": true },
+      { "name": "Condition", "type": "text", "required": true },
+      { "name": "Location", "type": "text", "required": true },
+      { "name": "ContactPhone", "type": "text", "required": true },
+      { "name": "Images", "type": "text", "required": false },
+      { "name": "Status", "type": "text", "required": true },
+      { "name": "Views", "type": "number", "required": false }
+    ]
+  },
+  {
+    "name": "document",
+    "fields": [
+      { "name": "VehicleId", "type": "text", "required": true },
+      { "name": "Title", "type": "text", "required": true },
+      { "name": "Type", "type": "text", "required": true },
+      { "name": "FileUrl", "type": "text", "required": true },
+      { "name": "ExpiryDate", "type": "date", "required": false },
+      { "name": "Description", "type": "text", "required": false }
+    ]
+  },
+  {
+    "name": "traffic_fine",
+    "fields": [
+      { "name": "VehicleId", "type": "text", "required": true },
+      { "name": "Date", "type": "date", "required": true },
+      { "name": "Violation", "type": "text", "required": true },
+      { "name": "Amount", "type": "number", "required": true },
+      { "name": "Location", "type": "text", "required": true },
+      { "name": "Status", "type": "text", "required": true },
+      { "name": "DueDate", "type": "date", "required": false },
+      { "name": "IsPaid", "type": "boolean", "required": false }
+    ]
+  },
+  {
+    "name": "notification",
+    "fields": [
+      { "name": "Title", "type": "text", "required": true },
+      { "name": "Message", "type": "text", "required": true },
+      { "name": "Type", "type": "text", "required": true },
+      { "name": "IsRead", "type": "boolean", "required": false },
+      { "name": "RelatedId", "type": "text", "required": false }
+    ]
+  },
+  {
+    "name": "service_center",
+    "fields": [
+      { "name": "Name", "type": "text", "required": true },
+      { "name": "Address", "type": "text", "required": true },
+      { "name": "Phone", "type": "text", "required": true },
+      { "name": "Services", "type": "text", "required": true },
+      { "name": "Rating", "type": "number", "required": false },
+      { "name": "ReviewCount", "type": "number", "required": false },
+      { "name": "Latitude", "type": "number", "required": false },
+      { "name": "Longitude", "type": "number", "required": false }
+    ]
+  }
+]
