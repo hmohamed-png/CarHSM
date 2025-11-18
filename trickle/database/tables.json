@@ -1,1 +1,166 @@
-[]
+[
+  {
+    "name": "user",
+    "fields": [
+      {"name": "phone", "type": "string"},
+      {"name": "name", "type": "string"},
+      {"name": "email", "type": "string"},
+      {"name": "profileImage", "type": "string"},
+      {"name": "whatsappNumber", "type": "string"},
+      {"name": "notificationsEnabled", "type": "boolean"},
+      {"name": "createdAt", "type": "datetime"}
+    ]
+  },
+  {
+    "name": "vehicle",
+    "fields": [
+      {"name": "userId", "type": "string"},
+      {"name": "make", "type": "string"},
+      {"name": "model", "type": "string"},
+      {"name": "year", "type": "number"},
+      {"name": "color", "type": "string"},
+      {"name": "licensePlate", "type": "string"},
+      {"name": "vin", "type": "string"},
+      {"name": "mileage", "type": "number"},
+      {"name": "fuelType", "type": "string"},
+      {"name": "imageUrl", "type": "string"},
+      {"name": "createdAt", "type": "datetime"}
+    ]
+  },
+  {
+    "name": "maintenance",
+    "fields": [
+      {"name": "vehicleId", "type": "string"},
+      {"name": "serviceType", "type": "string"},
+      {"name": "description", "type": "string"},
+      {"name": "cost", "type": "number"},
+      {"name": "mileage", "type": "number"},
+      {"name": "serviceDate", "type": "datetime"},
+      {"name": "serviceCenterId", "type": "string"},
+      {"name": "receiptImage", "type": "string"},
+      {"name": "nextServiceMileage", "type": "number"},
+      {"name": "createdAt", "type": "datetime"}
+    ]
+  },
+  {
+    "name": "fuel_record",
+    "fields": [
+      {"name": "vehicleId", "type": "string"},
+      {"name": "date", "type": "datetime"},
+      {"name": "liters", "type": "number"},
+      {"name": "cost", "type": "number"},
+      {"name": "mileage", "type": "number"},
+      {"name": "fuelType", "type": "string"},
+      {"name": "stationName", "type": "string"},
+      {"name": "fullTank", "type": "boolean"},
+      {"name": "createdAt", "type": "datetime"}
+    ]
+  },
+  {
+    "name": "traffic_fine",
+    "fields": [
+      {"name": "vehicleId", "type": "string"},
+      {"name": "fineNumber", "type": "string"},
+      {"name": "violation", "type": "string"},
+      {"name": "amount", "type": "number"},
+      {"name": "date", "type": "datetime"},
+      {"name": "location", "type": "string"},
+      {"name": "status", "type": "string"},
+      {"name": "paidDate", "type": "datetime"},
+      {"name": "paymentMethod", "type": "string"},
+      {"name": "createdAt", "type": "datetime"}
+    ]
+  },
+  {
+    "name": "service_center",
+    "fields": [
+      {"name": "name", "type": "string"},
+      {"name": "address", "type": "string"},
+      {"name": "phone", "type": "string"},
+      {"name": "specialties", "type": "string"},
+      {"name": "rating", "type": "number"},
+      {"name": "reviewCount", "type": "number"},
+      {"name": "latitude", "type": "number"},
+      {"name": "longitude", "type": "number"},
+      {"name": "workingHours", "type": "string"},
+      {"name": "verified", "type": "boolean"},
+      {"name": "createdAt", "type": "datetime"}
+    ]
+  },
+  {
+    "name": "review",
+    "fields": [
+      {"name": "serviceCenterId", "type": "string"},
+      {"name": "userId", "type": "string"},
+      {"name": "rating", "type": "number"},
+      {"name": "comment", "type": "string"},
+      {"name": "serviceType", "type": "string"},
+      {"name": "createdAt", "type": "datetime"}
+    ]
+  },
+  {
+    "name": "marketplace_listing",
+    "fields": [
+      {"name": "userId", "type": "string"},
+      {"name": "vehicleId", "type": "string"},
+      {"name": "listingType", "type": "string"},
+      {"name": "price", "type": "number"},
+      {"name": "title", "type": "string"},
+      {"name": "description", "type": "string"},
+      {"name": "make", "type": "string"},
+      {"name": "model", "type": "string"},
+      {"name": "year", "type": "number"},
+      {"name": "mileage", "type": "number"},
+      {"name": "condition", "type": "string"},
+      {"name": "color", "type": "string"},
+      {"name": "fuelType", "type": "string"},
+      {"name": "transmission", "type": "string"},
+      {"name": "images", "type": "string"},
+      {"name": "contactPhone", "type": "string"},
+      {"name": "contactWhatsApp", "type": "string"},
+      {"name": "status", "type": "string"},
+      {"name": "views", "type": "number"},
+      {"name": "createdAt", "type": "datetime"}
+    ]
+  },
+  {
+    "name": "reminder",
+    "fields": [
+      {"name": "vehicleId", "type": "string"},
+      {"name": "type", "type": "string"},
+      {"name": "title", "type": "string"},
+      {"name": "description", "type": "string"},
+      {"name": "dueDate", "type": "datetime"},
+      {"name": "mileageDue", "type": "number"},
+      {"name": "notifyBefore", "type": "number"},
+      {"name": "completed", "type": "boolean"},
+      {"name": "notificationSent", "type": "boolean"},
+      {"name": "createdAt", "type": "datetime"}
+    ]
+  },
+  {
+    "name": "notification",
+    "fields": [
+      {"name": "userId", "type": "string"},
+      {"name": "type", "type": "string"},
+      {"name": "title", "type": "string"},
+      {"name": "message", "type": "string"},
+      {"name": "read", "type": "boolean"},
+      {"name": "link", "type": "string"},
+      {"name": "createdAt", "type": "datetime"}
+    ]
+  },
+  {
+    "name": "document",
+    "fields": [
+      {"name": "vehicleId", "type": "string"},
+      {"name": "type", "type": "string"},
+      {"name": "title", "type": "string"},
+      {"name": "fileUrl", "type": "string"},
+      {"name": "expiryDate", "type": "datetime"},
+      {"name": "issueDate", "type": "datetime"},
+      {"name": "documentNumber", "type": "string"},
+      {"name": "createdAt", "type": "datetime"}
+    ]
+  }
+]
