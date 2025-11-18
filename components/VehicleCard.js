@@ -14,7 +14,7 @@ function VehicleCard({ vehicles, onUpdate }) {
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        await trickleCreateObject('vehicle', {
+        await window.trickleCreateObject('vehicle', {
           Brand: formData.brand,
           Model: formData.model,
           Year: parseInt(formData.year),

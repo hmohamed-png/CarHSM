@@ -12,8 +12,8 @@ function TrafficFinesList() {
     const loadData = async () => {
       try {
         const [finesData, vehiclesData] = await Promise.all([
-          trickleListObjects('traffic_fine', 100, true),
-          trickleListObjects('vehicle', 50, true)
+          window.trickleListObjects('traffic_fine', 100, true),
+          window.trickleListObjects('vehicle', 50, true)
         ]);
         setFines(finesData.items || []);
         setVehicles(vehiclesData.items || []);

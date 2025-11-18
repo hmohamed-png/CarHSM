@@ -18,8 +18,8 @@ function FuelTracker() {
     const loadData = async () => {
       try {
         const [vehiclesData, fuelData] = await Promise.all([
-          trickleListObjects('vehicle', 50, true),
-          trickleListObjects('fuel_record', 200, true)
+          window.trickleListObjects('vehicle', 50, true),
+          window.trickleListObjects('fuel_record', 200, true)
         ]);
         setVehicles(vehiclesData.items || []);
         setFuelRecords(fuelData.items || []);
@@ -32,7 +32,7 @@ function FuelTracker() {
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        await trickleCreateObject('fuel_record', {
+        await window.trickleCreateObject('fuel_record', {
           VehicleId: formData.vehicleId,
           Date: formData.date,
           Liters: parseFloat(formData.liters),

@@ -14,8 +14,8 @@ function RemindersList() {
     const loadData = async () => {
       try {
         const [remindersData, vehiclesData] = await Promise.all([
-          trickleListObjects('reminder', 100, false),
-          trickleListObjects('vehicle', 50, true)
+          window.trickleListObjects('reminder', 100, false),
+          window.trickleListObjects('vehicle', 50, true)
         ]);
         setReminders(remindersData.items || []);
         setVehicles(vehiclesData.items || []);
@@ -27,7 +27,7 @@ function RemindersList() {
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        await trickleCreateObject('reminder', {
+        await window.trickleCreateObject('reminder', {
           VehicleId: formData.vehicleId,
           Title: formData.title,
           DueDate: formData.dueDate,

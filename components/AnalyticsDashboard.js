@@ -11,8 +11,8 @@ function AnalyticsDashboard() {
 
     const loadAnalytics = async () => {
       try {
-        const maintenance = await trickleListObjects('maintenance', 500, true);
-        const vehicles = await trickleListObjects('vehicle', 100, true);
+        const maintenance = await window.trickleListObjects('maintenance', 500, true);
+        const vehicles = await window.trickleListObjects('vehicle', 100, true);
         const records = maintenance.items || [];
         
         const total = records.reduce((sum, r) => sum + (r.objectData.Cost || 0), 0);

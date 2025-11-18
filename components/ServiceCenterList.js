@@ -10,7 +10,7 @@ function ServiceCenterList() {
 
     const loadCenters = async () => {
       try {
-        const data = await trickleListObjects('service_center', 50, true);
+        const data = await window.trickleListObjects('service_center', 50, true);
         setCenters(data.items || []);
       } catch (error) {
         console.error('Error loading centers:', error);

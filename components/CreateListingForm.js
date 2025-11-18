@@ -16,7 +16,7 @@ function CreateListingForm() {
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        await trickleCreateObject('marketplace_listing', {
+        await window.trickleCreateObject('marketplace_listing', {
           title: `${formData.year} ${formData.brand} ${formData.model}`,
           type: formData.type,
           price: parseFloat(formData.price),
