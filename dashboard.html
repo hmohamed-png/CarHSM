@@ -8,6 +8,7 @@
     <script src="https://resource.trickle.so/vendor_lib/unpkg/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://resource.trickle.so/vendor_lib/unpkg/@babel/standalone/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://resource.trickle.so/trickle.js"></script>
     <link href="https://resource.trickle.so/vendor_lib/unpkg/lucide-static@0.516.0/font/lucide.css" rel="stylesheet">
     <style type="text/tailwindcss">
     @layer theme {
@@ -16,6 +17,7 @@
             --secondary-color: #1a1a1a;
             --accent-color: #FFD700;
             --bg-light: #f8f9fa;
+            --text-light: #6b7280;
         }
     }
     
@@ -42,6 +44,14 @@
         
         .animate-slideUp {
             animation: slideUp 0.5s ease-out;
+        }
+        
+        .btn-primary {
+            @apply px-6 py-3 bg-[var(--primary-color)] text-white rounded-lg font-semibold hover:opacity-90 transition-all shadow-md hover:shadow-lg;
+        }
+        
+        .btn-secondary {
+            @apply px-6 py-3 bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300 transition-all;
         }
     }
     </style>
