@@ -9,12 +9,12 @@ function ProfilePage() {
 
     const loadUserData = async () => {
       try {
-        const users = await trickleListObjects('user', 1, true);
+        const users = await window.trickleListObjects('user', 1, true);
         if (users.items && users.items.length > 0) {
           setUser(users.items[0]);
         }
-        const vehicles = await trickleListObjects('vehicle', 100, true);
-        const maintenance = await trickleListObjects('maintenance', 100, true);
+        const vehicles = await window.trickleListObjects('vehicle', 100, true);
+        const maintenance = await window.trickleListObjects('maintenance', 100, true);
         const totalSpent = maintenance.items?.reduce((sum, m) => sum + (m.objectData.Cost || 0), 0) || 0;
         setStats({ vehicles: vehicles.items?.length || 0, maintenance: maintenance.items?.length || 0, spent: totalSpent });
       } catch (error) {

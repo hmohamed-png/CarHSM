@@ -32,6 +32,8 @@
         .slide-up { animation: slideUp 0.8s ease-out; }
         .float-animation { animation: float 3s ease-in-out infinite; }
     </style>
+<link rel="stylesheet" href="styles.css">
+<script src="trickleMock.js"></script>
 </head>
 <body class="font-sans bg-white">
     <main>
@@ -51,7 +53,7 @@
                     <a href="#features" class="text-gray-600 hover:text-red-600 transition font-medium">Features</a>
                     <a href="#how-it-works" class="text-gray-600 hover:text-red-600 transition font-medium">How It Works</a>
                     <a href="#contact" class="text-gray-600 hover:text-red-600 transition font-medium">Contact</a>
-                    <button class="px-6 py-2.5 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-all shadow-md hover:shadow-lg">
+                    <button onclick="window.location.href='login.html'" class="px-6 py-2.5 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-all shadow-md hover:shadow-lg">
                         Get Started
                     </button>
                 </div>
@@ -73,10 +75,10 @@
                         
                         <!-- CTA Buttons -->
                         <div class="flex flex-wrap gap-4 mb-8">
-                            <button class="px-8 py-4 bg-red-600 text-white rounded-lg font-semibold text-lg hover:bg-red-700 transform hover:scale-105 transition-all shadow-lg hover:shadow-xl">
+                            <button onclick="window.location.href='login.html'" class="px-8 py-4 bg-red-600 text-white rounded-lg font-semibold text-lg hover:bg-red-700 transform hover:scale-105 transition-all shadow-lg hover:shadow-xl">
                                 Start Managing Your Car
                             </button>
-                            <button class="px-8 py-4 bg-white text-gray-900 border-2 border-gray-900 rounded-lg font-semibold text-lg hover:bg-gray-900 hover:text-white transition-all">
+                            <button onclick="document.getElementById('features').scrollIntoView({behavior: 'smooth'})" class="px-8 py-4 bg-white text-gray-900 border-2 border-gray-900 rounded-lg font-semibold text-lg hover:bg-gray-900 hover:text-white transition-all">
                                 Learn More
                             </button>
                         </div>
@@ -210,10 +212,10 @@
                 <h2 class="text-4xl md:text-5xl font-bold mb-6">Ready to Start?</h2>
                 <p class="text-xl mb-8 opacity-90">Join thousands of Egyptian car owners managing their vehicles smarter</p>
                 <div class="flex flex-wrap gap-4 justify-center">
-                    <button class="px-8 py-4 bg-white text-red-600 rounded-lg font-semibold text-lg hover:bg-gray-100 transform hover:scale-105 transition shadow-lg">
+                    <button onclick="window.location.href='login.html'" class="px-8 py-4 bg-white text-red-600 rounded-lg font-semibold text-lg hover:bg-gray-100 transform hover:scale-105 transition shadow-lg">
                         Get Started Free
                     </button>
-                    <button class="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-semibold text-lg hover:bg-white/10 transition">
+                    <button onclick="window.location.href='dashboard.html'" class="px-8 py-4 bg-transparent border-2 border-white text-white rounded-lg font-semibold text-lg hover:bg-white/10 transition">
                         View Demo
                     </button>
                 </div>

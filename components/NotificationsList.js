@@ -10,7 +10,7 @@ function NotificationsList() {
 
     const loadNotifications = async () => {
       try {
-        const data = await trickleListObjects('notification', 100, true);
+        const data = await window.trickleListObjects('notification', 100, true);
         setNotifications(data.items || []);
       } catch (error) {
         console.error('Error loading notifications:', error);

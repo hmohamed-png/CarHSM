@@ -9,7 +9,7 @@ function RecentActivity() {
 
     const loadActivities = async () => {
       try {
-        const data = await trickleListObjects('maintenance', 10, true);
+        const data = await window.trickleListObjects('maintenance', 10, true);
         setActivities(data.items || []);
       } catch (error) {
         console.error('Error loading activities:', error);

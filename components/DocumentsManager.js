@@ -14,8 +14,8 @@ function DocumentsManager() {
     const loadData = async () => {
       try {
         const [docsData, vehiclesData] = await Promise.all([
-          trickleListObjects('document', 100, true),
-          trickleListObjects('vehicle', 50, true)
+          window.trickleListObjects('document', 100, true),
+          window.trickleListObjects('vehicle', 50, true)
         ]);
         setDocuments(docsData.items || []);
         setVehicles(vehiclesData.items || []);
@@ -27,7 +27,7 @@ function DocumentsManager() {
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        await trickleCreateObject('document', {
+        await window.trickleCreateObject('document', {
           VehicleId: formData.vehicleId,
           Title: formData.title,
           Type: formData.type,

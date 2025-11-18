@@ -17,7 +17,7 @@ function AddMaintenanceForm() {
 
     const loadVehicles = async () => {
       try {
-        const data = await trickleListObjects('vehicle', 50, true);
+        const data = await window.trickleListObjects('vehicle', 50, true);
         setVehicles(data.items || []);
       } catch (error) {
         console.error('Error loading vehicles:', error);
@@ -27,7 +27,7 @@ function AddMaintenanceForm() {
     const handleSubmit = async (e) => {
       e.preventDefault();
       try {
-        await trickleCreateObject('maintenance', {
+        await window.trickleCreateObject('maintenance', {
           VehicleId: formData.vehicleId,
           ServiceType: formData.serviceType,
           Date: formData.date,

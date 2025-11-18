@@ -10,7 +10,7 @@ function VehicleDetails() {
 
     const loadVehicles = async () => {
       try {
-        const data = await trickleListObjects('vehicle', 20, true);
+        const data = await window.trickleListObjects('vehicle', 20, true);
         setVehicles(data.items || []);
         if (data.items && data.items.length > 0) {
           setSelectedVehicle(data.items[0]);

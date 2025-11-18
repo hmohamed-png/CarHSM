@@ -9,7 +9,7 @@ function UpcomingReminders() {
 
     const loadReminders = async () => {
       try {
-        const data = await trickleListObjects('reminder', 5, false);
+        const data = await window.trickleListObjects('reminder', 5, false);
         const upcoming = data.items?.filter(r => {
           const dueDate = new Date(r.objectData.DueDate);
           return dueDate > new Date();

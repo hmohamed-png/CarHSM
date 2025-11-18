@@ -8,7 +8,7 @@ function RegisterForm() {
       e.preventDefault();
       if (formData.terms) {
         try {
-          await trickleCreateObject('user', {
+          await window.trickleCreateObject('user', {
             Name: formData.name,
             Phone: `+20${formData.phone}`,
             Email: formData.email,

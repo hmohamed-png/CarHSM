@@ -11,7 +11,7 @@ function MarketplaceListing() {
 
     const loadListings = async () => {
       try {
-        const data = await trickleListObjects('marketplace_listing', 50, true);
+        const data = await window.trickleListObjects('marketplace_listing', 50, true);
         setListings(data.items || []);
       } catch (error) {
         console.error('Error loading listings:', error);

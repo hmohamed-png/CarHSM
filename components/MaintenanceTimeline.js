@@ -9,7 +9,7 @@ function MaintenanceTimeline({ vehicleId }) {
 
     const loadRecords = async () => {
       try {
-        const data = await trickleListObjects('maintenance', 50, true);
+        const data = await window.trickleListObjects('maintenance', 50, true);
         const filtered = data.items?.filter(r => r.objectData.VehicleId === vehicleId) || [];
         setRecords(filtered);
       } catch (error) {
